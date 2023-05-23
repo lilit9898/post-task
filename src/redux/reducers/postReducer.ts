@@ -39,6 +39,8 @@ const postsReducer = (state = initialState, action: PostAction) => {
   }
 };
 
+const paginationReducer = (state = initialState, action: PostAction) => {};
+
 const rootReducer = combineReducers({
   posts: postsReducer,
 });

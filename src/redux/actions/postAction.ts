@@ -38,3 +38,4 @@ export const fetchPostsFailure = (error: string): FetchPostsFailureAction => ({
   type: FETCH_POSTS_FAILURE,
   payload: error,
 });
+
