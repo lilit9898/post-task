@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import rootSaga from './sagas/rootSaga';
-import rootReducer from './reducers/postReducer';
+import { rootReducer } from './reducers/rootReducer';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));

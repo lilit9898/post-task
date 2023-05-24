@@ -5,8 +5,21 @@ export interface IPostsData {
   userId?: number;
 }
 
-export interface IInitialState {
+export interface ICommentsData {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+}
+
+export interface IPostsInitialState {
   posts: IPostsData[];
+  loading: boolean;
+  error: string | null;
+}
+export interface ICommentsInitialState {
+  comments: ICommentsData[];
   loading: boolean;
   error: string | null;
 }

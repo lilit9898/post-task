@@ -1,14 +1,12 @@
-import { combineReducers } from 'redux';
 import {
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
   FETCH_POSTS_FAILURE,
   PostAction,
 } from '../actions/postAction';
-import { IInitialState } from '../../types';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { IPostsInitialState } from '../../types';
 
-const initialState: IInitialState = {
+const initialState: IPostsInitialState = {
   posts: [],
   loading: false,
   error: null,
@@ -39,10 +37,4 @@ const postsReducer = (state = initialState, action: PostAction) => {
   }
 };
 
-const paginationReducer = (state = initialState, action: PostAction) => {};
-
-const rootReducer = combineReducers({
-  posts: postsReducer,
-});
-
-export default rootReducer;
+export default postsReducer;

@@ -1,4 +1,22 @@
 .table-container {
   width: 70%;
-  padding: 150px 0px;
+  padding: 50px 0px;
+}
+
+.table {
+  table-layout: fixed;
+}
+.table > thead > tr > th {
+  font-size: 20px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  width: 20%;
+}
+
+.table > tbody > tr > td {
+  font-size: 12px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  word-wrap: break-word;
 }

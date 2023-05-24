@@ -2,23 +2,30 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchPostsRequest } from '../../redux/actions/postAction';
 import Container from 'react-bootstrap/Container';
-import { Table } from 'react-bootstrap';
+import { Badge, Table } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
-import Pagination from 'react-bootstrap/Pagination';
 import './postList.scss';
-import { usePagination } from '../helpers/helper';
+import { usePagination } from '../helpers/usePagination';
 import { IPostsData } from '../../types';
+import PaginationC from '../../shared/Pagination';
+import { fetchCommentsRequest } from '../../redux/actions/commentsAction';
+import Comments from './comments/Comments';
 
 const PostList: React.FC = () => {
-  const { posts } = useAppSelector((state) => state.posts);
-
+  const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const [currentPagePosts, currentPage, setCurrentPage, pages] =
+    usePagination();
+  const comments = useAppSelector((state) => state.comments.comments);
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
   }, []);
-  console.log(posts);
-  const [currentPagePosts, setCurrentPage] = usePagination();
+
+  const handleClick = (id: number) => {
+    setOpen(!open);
+    dispatch(fetchCommentsRequest(id));
+  };
 
   const renderUsers = () => {
     return (currentPagePosts as IPostsData[]).map(({ id, title, body }) => {
@@ -29,21 +36,28 @@ const PostList: React.FC = () => {
           </td>
           <td>{title}</td>
           <td>{body}</td>
-          <td>comments</td>
+          <td>
+            {}
+
+            <button onClick={() => handleClick(id)}>comments</button>
+            {open && id && <Comments />}
+          </td>
         </tr>
       );
     });
   };
-  let num = 1;
-  let pages = [];
-
-  for (let i = 0; i < posts.length / 10; i++) {
-    pages.push(num + i);
-  }
 
   return (
     <Container className="table-container">
-      <Table striped bordered hover color="white">
+      <h1 style={{ padding: '0px 20px 20px 20px ' }}>Post List</h1>
+      <Table
+        striped
+        bordered
+        hover
+        color="white"
+        responsive
+        style={{ overflowY: 'auto', height: '700px' }}
+      >
         <thead>
           <tr>
             <th>user</th>
@@ -54,15 +68,8 @@ const PostList: React.FC = () => {
         </thead>
         <tbody>{renderUsers()}</tbody>
       </Table>
-      <Pagination>
-        {pages.map((item) => {
-          return (
-            <div onClick={() => setCurrentPage<>(item)}>
-              <Pagination.Item>{item}</Pagination.Item>
-            </div>
-          );
-        })}
-      </Pagination>
+
+      <PaginationC setCurrentPage={setCurrentPage} pages={pages} />
     </Container>
   );
 };
