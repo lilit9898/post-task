@@ -13,13 +13,18 @@ export interface ICommentsData {
   body: string;
 }
 
+export interface IComments {
+  id: number;
+  comments: ICommentsData[];
+}
+
 export interface IPostsInitialState {
   posts: IPostsData[];
   loading: boolean;
   error: string | null;
 }
 export interface ICommentsInitialState {
-  comments: ICommentsData[];
+  comments: { [id: number]: ICommentsData[] };
   loading: boolean;
   error: string | null;
 }

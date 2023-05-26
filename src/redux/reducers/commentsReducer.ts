@@ -7,7 +7,7 @@ import {
 import { ICommentsInitialState } from '../../types';
 
 const initialState: ICommentsInitialState = {
-  comments: [],
+  comments: {},
   loading: false,
   error: null,
 };
@@ -21,10 +21,14 @@ const commentsReducer = (state = initialState, action: CommentsAction) => {
         error: null,
       };
     case FETCH_COMMENTS_SUCCESS:
+      const { id, comments } = action.payload;
       return {
         ...state,
         loading: false,
-        comments: action.payload,
+        comments: {
+          ...state.comments,
+          [id]: comments,
+        },
       };
     case FETCH_COMMENTS_FAILURE:
       return {

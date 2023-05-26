@@ -1,18 +1,28 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/store';
-import { ICommentsData } from '../../../types';
-import { fetchCommentsRequest } from '../../../redux/actions/commentsAction';
+import { RootState, useAppSelector } from '../../../redux/store';
 
-const Comments: React.FC = () => {
-  const dispatch = useAppDispatch();
-
-  const comments = useAppSelector((state) => state.comments.comments);
-  console.log(comments, 'commentsttttt');
+const Comments: React.FC<{ id: number }> = ({ id }) => {
+  const comments = useAppSelector(
+    (state: RootState) => state.comments.comments,
+  );
 
   return (
     <>
-      {comments?.map((item) => {
-        return <div>{item.email}</div>;
+      {comments[id]?.map((item) => {
+        return (
+          <div key={item.id} style={{ padding: 10 }}>
+            <div>
+              <p style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>user</p>
+              {item.email}
+            </div>
+            <div>
+              <p style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>
+                comment
+              </p>
+              {item.body}
+            </div>
+          </div>
+        );
       })}
     </>
   );

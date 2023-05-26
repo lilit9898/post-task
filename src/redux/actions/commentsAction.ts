@@ -1,4 +1,4 @@
-import { ICommentsData } from '../../types';
+import { IComments, ICommentsData } from '../../types';
 
 export const FETCH_COMMENTS_REQUEST = 'FETCH_COMMENTS_REQUEST';
 export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS';
@@ -11,7 +11,7 @@ export interface FetchCommentsRequestAction {
 
 export interface FetchCommentsSuccessAction {
   type: typeof FETCH_COMMENTS_SUCCESS;
-  payload: ICommentsData[];
+  payload: IComments;
 }
 
 export interface FetchCommentsFailureAction {
@@ -32,10 +32,11 @@ export const fetchCommentsRequest = (
 });
 
 export const fetchCommentsSuccess = (
+  id: number,
   comments: ICommentsData[],
 ): FetchCommentsSuccessAction => ({
   type: FETCH_COMMENTS_SUCCESS,
-  payload: comments,
+  payload: {id, comments},
 });
 
 export const fetchCommentsFailure = (

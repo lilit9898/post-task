@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { RootState, useAppDispatch, useAppSelector } from '../../redux/store';
 import { fetchPostsRequest } from '../../redux/actions/postAction';
 import Container from 'react-bootstrap/Container';
 import { Badge, Table } from 'react-bootstrap';
@@ -12,19 +12,38 @@ import { fetchCommentsRequest } from '../../redux/actions/commentsAction';
 import Comments from './comments/Comments';
 
 const PostList: React.FC = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<{ [id: string]: boolean }>({});
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
+  // const loading = useAppSelector((state: RootState) => state.comments.loading);
+
   const [currentPagePosts, currentPage, setCurrentPage, pages] =
     usePagination();
-  const comments = useAppSelector((state) => state.comments.comments);
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
   }, []);
 
   const handleClick = (id: number) => {
-    setOpen(!open);
-    dispatch(fetchCommentsRequest(id));
+    setOpen((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+    if (!open[id] || Object.keys(open).length === 0) {
+      setLoading(true);
+      const timer = setTimeout(() => {
+        dispatch(fetchCommentsRequest(id));
+        setLoading(false);
+        // {
+        //   (open[id] || Object.keys(open).length === 0) &&
+        //     dispatch(fetchCommentsRequest(id)),
+        //     setLoading(false);
+        // }
+      }, 2000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
   };
 
   const renderUsers = () => {
@@ -37,10 +56,12 @@ const PostList: React.FC = () => {
           <td>{title}</td>
           <td>{body}</td>
           <td>
-            {}
-
             <button onClick={() => handleClick(id)}>comments</button>
-            {open && id && <Comments />}
+            {loading ? (
+              <div>Loading...</div>
+            ) : open[id] ? (
+              <Comments id={id} />
+            ) : null}
           </td>
         </tr>
       );
@@ -68,7 +89,6 @@ const PostList: React.FC = () => {
         </thead>
         <tbody>{renderUsers()}</tbody>
       </Table>
-
       <PaginationC setCurrentPage={setCurrentPage} pages={pages} />
     </Container>
   );

@@ -35,7 +35,7 @@ function* fetchCommentsSaga(action: CommentsAction) {
       instance.get,
       `/posts/${id}${COMMENTS_URL}`,
     );
-    yield put(fetchCommentsSuccess(response.data));
+    yield put(fetchCommentsSuccess(id as number, response.data));
   } catch (error: any) {
     yield put(fetchCommentsFailure(error.message));
   }
