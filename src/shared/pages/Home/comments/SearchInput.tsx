@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
-import { IPostsData } from '../../../types';
-import { useAppSelector } from '../../../redux/store';
+import { IPostsData } from '../../../../types';
+import { useAppSelector } from '../../../../redux/store';
 
 interface ISerchInputProps {
   setCurrentPosts: Dispatch<SetStateAction<IPostsData[]>>;

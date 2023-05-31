@@ -2,9 +2,17 @@ import React, { useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
+import { generatePath, useNavigate } from 'react-router';
+import { Routers } from '../../enums/routers.enum';
 
-const Header: React.FC = () => {
+const AppHeader: React.FC = () => {
+  const navigate = useNavigate();
+
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
+
+  const handleOnNavigate = (path: string) => () => {
+    navigate(path);
+  };
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
@@ -13,15 +21,23 @@ const Header: React.FC = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="xxl">
       <Container>
-        <Navbar.Brand href="#home">Your Website</Navbar.Brand>
+        <Navbar.Brand onClick={handleOnNavigate(Routers.HOME)}>
+          Your Website
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={toggleMenu} />
         <Navbar.Collapse
           id="basic-navbar-nav"
           className={isMenuOpen ? 'show' : ''}
         >
           <Nav className="ml-auto">
-            <Nav.Link href="#home">Posts</Nav.Link>
-            <Nav.Link href="#about">About</Nav.Link>
+            <Nav.Link onClick={handleOnNavigate(Routers.ABOUT)}>Posts</Nav.Link>
+            <Nav.Link
+              onClick={handleOnNavigate(
+                generatePath(Routers.POST, { postId: '1' }),
+              )}
+            >
+              About
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -29,4 +45,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default AppHeader;

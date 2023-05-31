@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { RootState, useAppDispatch, useAppSelector } from '../../redux/store';
-import { fetchPostsRequest } from '../../redux/actions/postAction';
 import Container from 'react-bootstrap/Container';
 import { Table } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import './postList.scss';
-import { usePagination } from '../helpers/usePagination';
-import { IPostsData } from '../../types';
-import PaginationC from '../../shared/Pagination';
-import { fetchCommentsRequest } from '../../redux/actions/commentsAction';
 import Comments from './comments/Comments';
 import SearchInput from './comments/SearchInput';
+import MainLayout from '../../layouts/MainLayout';
+import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import { IPostsData } from '../../../types';
+import { fetchPostsRequest } from '../../../redux/actions/postAction';
+import { fetchCommentsRequest } from '../../../redux/actions/commentsAction';
+import Pagination from '../../containers/Pagination/Pagination';
+import usePagination from '../../hooks/usePagination';
 
 const PostList: React.FC = () => {
   const [loadComments, setLoadComments] = useState<{
@@ -29,8 +30,7 @@ const PostList: React.FC = () => {
     dispatch(fetchPostsRequest());
   }, []);
 
-  const [currentPagePosts, currentPage, setCurrentPage, pages] =
-    usePagination(currentPosts);
+  const [currentPagePosts, currentPage, setCurrentPage, pages] = usePagination(currentPosts); // prettier-ignore
 
   const handleClick = (id: number) => {
     setLoadComments((prevState) => ({
@@ -75,7 +75,7 @@ const PostList: React.FC = () => {
   };
 
   return (
-    <>
+    <MainLayout>
       <Container className="table-container">
         <h1 style={{ padding: '0px 20px 20px 20px ' }}>Post List</h1>
         <SearchInput setCurrentPosts={setCurrentPosts} />
@@ -97,9 +97,9 @@ const PostList: React.FC = () => {
           </thead>
           <tbody>{renderUsers()}</tbody>
         </Table>
-        <PaginationC setCurrentPage={setCurrentPage} pages={pages} />
+        <Pagination setCurrentPage={setCurrentPage} pages={pages} />
       </Container>
-    </>
+    </MainLayout>
   );
 };
 

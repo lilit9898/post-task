@@ -1,5 +1,5 @@
 import React from 'react';
-import { RootState, useAppSelector } from '../../../redux/store';
+import { RootState, useAppSelector } from '../../../../redux/store';
 
 const Comments: React.FC<{ id: number }> = ({ id }) => {
   const comments = useAppSelector(

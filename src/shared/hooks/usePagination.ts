@@ -9,7 +9,7 @@ export interface IPagination {
   pages: number[];
 }
 
-export function usePagination(
+export default function usePagination(
   currentPosts: IPostsData[],
 ): [
   IPagination['currentPagePosts'],

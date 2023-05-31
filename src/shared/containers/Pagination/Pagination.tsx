@@ -1,28 +1,25 @@
 import { Container } from 'react-bootstrap';
-import {
-  IPagination,
-  usePagination,
-} from '../components/helpers/usePagination';
-import Pagination from 'react-bootstrap/Pagination';
+import { IPagination } from '../../hooks/usePagination';
+import { default as BPagination } from 'react-bootstrap/Pagination';
 
 type IPaginationProps = Pick<IPagination, 'pages' | 'setCurrentPage'>;
 
-const PaginationC: React.FC<IPaginationProps> = ({ pages, setCurrentPage }) => {
+const Pagination: React.FC<IPaginationProps> = ({ pages, setCurrentPage }) => {
   const handleOnSetCurrentPage = (page: number) => () => {
     setCurrentPage(page);
   };
 
   return (
     <Container>
-      <Pagination>
+      <BPagination>
         {pages.map((item) => (
           <div key={item} onClick={handleOnSetCurrentPage(item)}>
-            <Pagination.Item>{item}</Pagination.Item>
+            <BPagination.Item>{item}</BPagination.Item>
           </div>
         ))}
-      </Pagination>
+      </BPagination>
     </Container>
   );
 };
 
-export default PaginationC;
+export default Pagination;
