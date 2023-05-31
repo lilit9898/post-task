@@ -1,7 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 import {
-  FETCH_POSTS_REQUEST,
   fetchPostsSuccess,
   fetchPostsFailure,
 } from '../actions/postAction';

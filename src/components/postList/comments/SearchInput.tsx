@@ -1,18 +1,33 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { IPostsData } from '../../../types';
+import { useAppSelector } from '../../../redux/store';
 
 interface ISerchInputProps {
-  handleSearch?: () => void;
-  searchTerm?: string;
-  setSearchTerm?: any;
+  setCurrentPosts: Dispatch<SetStateAction<IPostsData[]>>;
 }
 
-const SearchInput: React.FC<ISerchInputProps> = ({
-  handleSearch,
-  searchTerm,
-  setSearchTerm,
-}) => {
+const SearchInput: React.FC<ISerchInputProps> = ({ setCurrentPosts }) => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const { posts } = useAppSelector((state) => state.posts);
+
+  const handleSearch = (value: string) => {
+    const filteredData = posts.filter((item) =>
+      item.title.toLowerCase().includes(value.toLowerCase()),
+    );
+    setCurrentPosts(filteredData);
+  };
+
+  const handleOnChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    handleSearch(target.value);
+    setSearchTerm(target.value);
+  };
+
+  const handleOnClick = () => {
+    setSearchTerm('');
+    setCurrentPosts(posts);
+  };
+
   return (
     <>
       <InputGroup className="mb-3">
@@ -21,14 +36,14 @@ const SearchInput: React.FC<ISerchInputProps> = ({
           aria-describedby="basic-addon1"
           type="text"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleOnChange}
         />
         <Button
           variant="outline-secondary"
           id="button-addon1"
-          onClick={handleSearch}
+          onClick={handleOnClick}
         >
-          Search
+          X
         </Button>
       </InputGroup>
     </>

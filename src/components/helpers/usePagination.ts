@@ -9,25 +9,31 @@ export interface IPagination {
   pages: number[];
 }
 
-export function usePagination(): [
+export function usePagination(
+  currentPosts: IPostsData[],
+): [
   IPagination['currentPagePosts'],
   IPagination['currentPage'],
   IPagination['setCurrentPage'],
   IPagination['pages'],
 ] {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const { posts } = useAppSelector((state) => state.posts);
 
   let num = 1;
   let pages = [];
 
-  for (let i = 0; i < posts.length / 10; i++) {
+  for (let i = 0; i < currentPosts.length / 10; i++) {
     pages.push(num + i);
   }
 
-  const itemsPerPage = 5;
+  console.log({ currentPosts });
+
+  const itemsPerPage = currentPosts.length > 5 ? 5 : currentPosts.length;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentPagePosts: IPostsData[] = posts.slice(startIndex, endIndex);
+  const currentPagePosts: IPostsData[] = currentPosts.slice(
+    startIndex,
+    endIndex,
+  );
   return [currentPagePosts, currentPage, setCurrentPage, pages];
 }

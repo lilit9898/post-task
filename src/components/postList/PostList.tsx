@@ -13,19 +13,24 @@ import Comments from './comments/Comments';
 import SearchInput from './comments/SearchInput';
 
 const PostList: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
   const [loadComments, setLoadComments] = useState<{
     open: { [id: string]: boolean };
     loading: { [id: string]: boolean };
   }>({ open: {}, loading: {} });
   const dispatch = useAppDispatch();
+  const { posts } = useAppSelector((state) => state.posts);
+  const [currentPosts, setCurrentPosts] = useState<IPostsData[]>(posts);
 
-  const [currentPagePosts, currentPage, setCurrentPage, pages] =
-    usePagination();
+  useEffect(() => {
+    setCurrentPosts(posts);
+  }, [posts]);
 
   useEffect(() => {
     dispatch(fetchPostsRequest());
   }, []);
+
+  const [currentPagePosts, currentPage, setCurrentPage, pages] =
+    usePagination(currentPosts);
 
   const handleClick = (id: number) => {
     setLoadComments((prevState) => ({
@@ -48,61 +53,32 @@ const PostList: React.FC = () => {
       };
     }
   };
-  const handleSearch = () => {
-    const filteredData = currentPagePosts.filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-    return filteredData;
-    // Update your component state or perform any other logic with the filtered data
-  };
 
   const renderUsers = () => {
-    return handleSearch().length <= 0
-      ? currentPagePosts.map(({ id, title, body }) => (
-          <tr key={id}>
-            <td>
-              <Image src="/images/user.png" width={40} />
-            </td>
-            <td>{title}</td>
-            <td>{body}</td>
-            <td>
-              <button onClick={() => handleClick(id)}>comments</button>
-              {loadComments.loading[id] ? (
-                <div>Loading...</div>
-              ) : loadComments?.open[id] ? (
-                <Comments id={id} />
-              ) : null}
-            </td>
-          </tr>
-        ))
-      : handleSearch().map(({ id, title, body }) => (
-          <tr key={id}>
-            <td>
-              <Image src="/images/user.png" width={40} />
-            </td>
-            <td>{title}</td>
-            <td>{body}</td>
-            <td>
-              <button onClick={() => handleClick(id)}>comments</button>
-              {loadComments.loading[id] ? (
-                <div>Loading...</div>
-              ) : loadComments?.open[id] ? (
-                <Comments id={id} />
-              ) : null}
-            </td>
-          </tr>
-        ));
+    return currentPagePosts.map(({ id, title, body }) => (
+      <tr key={id}>
+        <td>
+          <Image src="/images/user.png" width={40} />
+        </td>
+        <td>{title}</td>
+        <td>{body}</td>
+        <td>
+          <button onClick={() => handleClick(id)}>comments</button>
+          {loadComments.loading[id] ? (
+            <div>Loading...</div>
+          ) : loadComments?.open[id] ? (
+            <Comments id={id} />
+          ) : null}
+        </td>
+      </tr>
+    ));
   };
 
   return (
     <>
       <Container className="table-container">
         <h1 style={{ padding: '0px 20px 20px 20px ' }}>Post List</h1>
-        <SearchInput
-          handleSearch={handleSearch}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-        />
+        <SearchInput setCurrentPosts={setCurrentPosts} />
         <Table
           striped
           bordered
