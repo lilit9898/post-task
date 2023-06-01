@@ -1,17 +1,19 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
+import { fetchPostsSuccess, fetchPostsFailure } from '../actions/postAction';
 import {
-  fetchPostsSuccess,
-  fetchPostsFailure,
-} from '../actions/postAction';
-import {
-  FETCH_COMMENTS_REQUEST,
   fetchCommentsSuccess,
   fetchCommentsFailure,
   CommentsAction,
 } from '../actions/commentsAction';
 import instance from '../../config/axios';
 import { USERS_LIST_URL, COMMENTS_URL } from '../../constants';
+import {
+  UserInfoAction,
+  fetchUserInfoFailure,
+  fetchUserInfoSuccess,
+} from '../actions/userInfoAction';
+import { log } from 'console';
 
 function* fetchPostsSaga() {
   try {
@@ -40,9 +42,34 @@ function* fetchCommentsSaga(action: CommentsAction) {
   }
 }
 
+function* fetchUserInfoSaga(action: UserInfoAction) {
+  const userId = action.payload;
+  try {
+    const response: AxiosResponse = yield call(
+      instance.get,
+      `/users/${userId}/posts`,
+    );
+    const userInfoResponse: AxiosResponse = yield call(
+      instance.get,
+      `/users/${userId}`,
+    );
+    yield put(
+      fetchUserInfoSuccess(
+        userId as string, 
+        response.data,
+        userInfoResponse.data
+      
+      ),
+    );
+  } catch (error: any) {
+    yield put(fetchUserInfoFailure(error.message));
+  }
+}
+
 function* watchFetchData() {
   yield takeEvery('FETCH_POSTS_REQUEST', fetchPostsSaga);
   yield takeEvery('FETCH_COMMENTS_REQUEST', fetchCommentsSaga);
+  yield takeEvery('FETCH_USERINFO_REQUEST', fetchUserInfoSaga);
 }
 
 function* rootSaga() {

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAppSelector } from '../../redux/store';
 import { IPostsData } from '../../types';
 
 export interface IPagination {
@@ -25,8 +24,6 @@ export default function usePagination(
   for (let i = 0; i < currentPosts.length / 10; i++) {
     pages.push(num + i);
   }
-
-  console.log({ currentPosts });
 
   const itemsPerPage = currentPosts.length > 5 ? 5 : currentPosts.length;
   const startIndex = (currentPage - 1) * itemsPerPage;

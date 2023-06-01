@@ -1,6 +1,5 @@
 import { FC, ReactNode } from 'react';
 import AppHeader from '../containers/AppHeader/AppHeader';
-import { Container } from 'react-bootstrap';  
 
 interface IMainLayoutProps {
   children: ReactNode;

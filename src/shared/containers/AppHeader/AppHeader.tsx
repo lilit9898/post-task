@@ -30,14 +30,8 @@ const AppHeader: React.FC = () => {
           className={isMenuOpen ? 'show' : ''}
         >
           <Nav className="ml-auto">
-            <Nav.Link onClick={handleOnNavigate(Routers.ABOUT)}>Posts</Nav.Link>
-            <Nav.Link
-              onClick={handleOnNavigate(
-                generatePath(Routers.POST, { postId: '1' }),
-              )}
-            >
-              About
-            </Nav.Link>
+            <Nav.Link onClick={handleOnNavigate(Routers.HOME)}  >Posts</Nav.Link>
+            <Nav.Link onClick={handleOnNavigate(Routers.ABOUT)}>About</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -46,3 +40,4 @@ const AppHeader: React.FC = () => {
 };
 
 export default AppHeader;
+

@@ -12,6 +12,8 @@ import { fetchPostsRequest } from '../../../redux/actions/postAction';
 import { fetchCommentsRequest } from '../../../redux/actions/commentsAction';
 import Pagination from '../../containers/Pagination/Pagination';
 import usePagination from '../../hooks/usePagination';
+import { generatePath, useNavigate } from 'react-router';
+import { Routers } from '../../enums/routers.enum';
 
 const PostList: React.FC = () => {
   const [loadComments, setLoadComments] = useState<{
@@ -21,6 +23,7 @@ const PostList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { posts } = useAppSelector((state) => state.posts);
   const [currentPosts, setCurrentPosts] = useState<IPostsData[]>(posts);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCurrentPosts(posts);
@@ -54,10 +57,17 @@ const PostList: React.FC = () => {
     }
   };
 
+  function handleNavigate(userId: string | undefined) {
+    navigate(generatePath(Routers.POST, { userId: '' + userId }));
+  }
+
   const renderUsers = () => {
-    return currentPagePosts.map(({ id, title, body }) => (
+    return currentPagePosts.map(({ id, title, body, userId }) => (
       <tr key={id}>
-        <td>
+        <td
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleNavigate('' + userId)}
+        >
           <Image src="/images/user.png" width={40} />
         </td>
         <td>{title}</td>

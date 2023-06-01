@@ -4,29 +4,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding-top: 20px;
   background-color: rgb(65, 66, 66);
   position: relative;
 }
 
-// .aboutMeBox {
-//   margin: 20px 0;
-//   width: 50%;
-//   height: 90vh;
-//   background-color: aliceblue;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   border-top: 100px solid rgb(92, 58, 113);
-//   border-bottom: 100px solid rgb(92, 58, 113);
-//   z-index: 1;
-//   position: relative;
-// }
+.me {
+  margin-bottom: 15px;
+  height: 120px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 
 .topBorderDiv {
   width: 40%;
-  height: 9%;
+  height: 4%;
   background-color: rgb(92, 58, 113);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .mainDiv {
@@ -37,31 +33,26 @@
 
 .bottomBorderDiv {
   width: 40%;
-  height: 9%;
+  height: 4%;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
   background-color: rgb(92, 58, 113);
 }
-
-// .bbb {
-//   background-color: aliceblue;
-//   position: absolute;
-//   top: 20px;
-//   width: 98%;
-//   height: 120%;
-//   z-index: 3;
-// }
 
 .mainCvBox {
   background-color: rgb(255, 255, 255);
   width: 37%;
-  height: 92%;
+  height: 82%;
   position: absolute;
   top: 4%;
+  overflow-y: scroll;
+  border-radius: 20px;
 }
 
 .photoContainer {
   margin: 20px;
   width: 20%;
-  height: 15%;
+  height: 100%;
   border: 2px solid rgb(92, 58, 113);
   border-radius: 50%;
 }
@@ -70,4 +61,78 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
+}
+
+.cv {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.cv-header {
+  margin-bottom: 10px;
+}
+
+.cv-section {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.cv-section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.work-experience {
+  display: flex;
+  flex-direction: column;
+}
+
+.work-experience-item {
+  margin-bottom: 20px;
+}
+
+.work-experience-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.work-experience-details p {
+  margin: 0;
+}
+
+.education {
+  display: flex;
+  flex-direction: column;
+}
+
+.education-item {
+  margin-bottom: 20px;
+}
+
+.education-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.education-details p {
+  margin: 0;
+}
+
+.cv-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.cv-section a {
+  color: #333;
+  text-decoration: none;
+}
+
+.cv-section a:hover {
+  text-decoration: underline;
 }
