@@ -1,0 +1,38 @@
+.mContainer {
+  padding-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.baseInfo {
+  width: 100%;
+  text-align: start;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  font-weight: 500;
+}
+
+.posts {
+  padding-left: 20px;
+  text-align: start;
+}
+.post {
+  padding: 20px 0 20px 0;
+}
+
+.postItems {
+  display: flex;
+  gap: 10px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: start;
+}
+
+.button {
+  color: rgb(99, 37, 191);
+}

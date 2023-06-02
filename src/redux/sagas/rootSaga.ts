@@ -13,7 +13,6 @@ import {
   fetchUserInfoFailure,
   fetchUserInfoSuccess,
 } from '../actions/userInfoAction';
-import { log } from 'console';
 
 function* fetchPostsSaga() {
   try {
@@ -34,7 +33,7 @@ function* fetchCommentsSaga(action: CommentsAction) {
   try {
     const response: AxiosResponse = yield call(
       instance.get,
-      `/posts/${id}${COMMENTS_URL}`,
+      ` /posts/${id}${COMMENTS_URL}`,
     );
     yield put(fetchCommentsSuccess(id as number, response.data));
   } catch (error: any) {
@@ -55,10 +54,9 @@ function* fetchUserInfoSaga(action: UserInfoAction) {
     );
     yield put(
       fetchUserInfoSuccess(
-        userId as string, 
+        userId as string,
         response.data,
-        userInfoResponse.data
-      
+        userInfoResponse.data,
       ),
     );
   } catch (error: any) {

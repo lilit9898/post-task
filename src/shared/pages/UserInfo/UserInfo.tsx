@@ -1,40 +1,77 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchUserInfoRequest } from '../../../redux/actions/userInfoAction';
-import { IUserData, IUserInfo } from '../../../types';
+import { IUserData } from '../../../types';
+import './userInfo.scss';
+import { Routers } from '../../enums/routers.enum';
 
 const UserInfo: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>();
   const { userId } = useParams<{ userId: string }>();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    setLoading(true);
     if (userId) {
-      dispatch(fetchUserInfoRequest(userId));
+      let timer = setTimeout(() => {
+        dispatch(fetchUserInfoRequest(userId));
+        setLoading(false);
+      }, 2000);
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [dispatch, userId]);
 
   const info = useAppSelector((state) => state.userInfo.info);
-  console.log(info, 'info');
-  if (!userId || !info[+userId]) {
-    return null;
+  if (!userId || !info || !info[+userId]) {
+    return <h1>Loading...</h1>;
   }
 
+  const handleOnNavigate = (path: string) => () => {
+    navigate(path);
+  };
   return (
     <div>
-      <h1> User</h1>
-      <>
+      {loading ? (
         <div>
-          <div>{info[+userId].userInfo.name}</div>
-          <div>{info[+userId].userInfo.phone}</div>
+          <h1>Loading...</h1>
         </div>
-      </>
-      {info[+userId].userPosts.map((item: IUserData) => (
-        <div key={item.id}>
-          <div>{item.title}</div>
-          <div>{item.body}</div>
+      ) : (
+        <div className="pageConainer">
+          <div className="buttonContainer">
+            <button className="button" onClick={handleOnNavigate(Routers.HOME)}>
+              Back
+            </button>
+          </div>
+          <div className="mContainer">
+            <h1> {info[+userId].userInfo.name}</h1>
+            <div className="baseInfo">
+              <p style={{ fontWeight: 700 }}>Contacts</p>
+              email:{info[+userId].userInfo.email}
+              <br />
+              phone:{info[+userId].userInfo.phone}
+            </div>
+            <div className="posts">
+              <h1>posts</h1>
+              {info[+userId].userPosts.map((item: IUserData) => (
+                <div key={item.id} className="post">
+                  <div className="postItems">
+                    <p style={{ fontWeight: 700 }}>title:</p>
+                    <p>{item.title}</p>
+                  </div>
+                  <div className="postItems">
+                    <p style={{ fontWeight: 700 }}>text:</p>
+                    <p>{item.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      ))}
+      )}
     </div>
   );
 };
